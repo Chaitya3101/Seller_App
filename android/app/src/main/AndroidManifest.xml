@@ -1,0 +1,21 @@
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.visionmart">
+    <application
+        android:name="io.flutter.app.FlutterApplication"
+        android:label="visionmart"
+        android:icon="@mipmap/ic_launcher">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

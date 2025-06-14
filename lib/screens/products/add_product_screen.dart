@@ -1,0 +1,122 @@
+
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+class AddProductScreen extends StatefulWidget {
+  @override
+  _AddProductScreenState createState() => _AddProductScreenState();
+}
+
+class _AddProductScreenState extends State<AddProductScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
+  final priceController = TextEditingController();
+  final stockController = TextEditingController();
+  final descController = TextEditingController();
+  String? selectedCategory;
+  File? _image;
+
+  Future<void> _pickImage() async {
+    final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (picked != null) {
+      setState(() {
+        _image = File(picked.path);
+      });
+    }
+  }
+
+  void _submitForm() {
+    if (_formKey.currentState!.validate() && _image != null && selectedCategory != null) {
+      Navigator.pop(context, {
+        "name": nameController.text,
+        "price": priceController.text,
+        "stock": stockController.text,
+        "image": _image,
+        "category": selectedCategory,
+        "description": descController.text,
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Please complete all fields.")),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Add Product"), backgroundColor: Colors.indigo),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(24),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GestureDetector(
+                onTap: _pickImage,
+                child: Container(
+                  height: 180,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.indigo.shade50,
+                    borderRadius: BorderRadius.circular(8),
+                    image: _image != null
+                        ? DecorationImage(image: FileImage(_image!), fit: BoxFit.cover)
+                        : null,
+                  ),
+                  child: _image == null
+                      ? Center(child: Icon(Icons.add_a_photo, size: 40, color: Colors.indigo))
+                      : null,
+                ),
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: nameController,
+                decoration: InputDecoration(labelText: "Product Name", border: OutlineInputBorder()),
+                validator: (val) => val!.isEmpty ? "Enter product name" : null,
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: priceController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: "Price (₹)", border: OutlineInputBorder()),
+                validator: (val) => val!.isEmpty ? "Enter price" : null,
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: stockController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: "Stock", border: OutlineInputBorder()),
+                validator: (val) => val!.isEmpty ? "Enter stock" : null,
+              ),
+              SizedBox(height: 16),
+              DropdownButtonFormField<String>(
+                value: selectedCategory,
+                items: ["Men", "Women", "Kids", "Essentials"]
+                    .map((cat) => DropdownMenuItem(value: cat, child: Text(cat)))
+                    .toList(),
+                onChanged: (val) => setState(() => selectedCategory = val),
+                decoration: InputDecoration(labelText: "Category", border: OutlineInputBorder()),
+                validator: (val) => val == null ? "Select category" : null,
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: descController,
+                maxLines: 3,
+                decoration: InputDecoration(labelText: "Description", border: OutlineInputBorder()),
+              ),
+              SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: _submitForm,
+                child: Text("Add Product"),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.indigo),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
