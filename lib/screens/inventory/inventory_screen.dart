@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import '../products/add_product_screen.dart';
@@ -65,62 +64,44 @@ class _InventoryScreenState extends State<InventoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Inventory"),
+        title: Text("Inventory Management"),
         backgroundColor: Colors.indigo,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: _navigateToAddProduct,
-          )
-        ],
       ),
-      body: products.isEmpty
-          ? Center(child: Text("No products added yet."))
-          : Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GridView.builder(
-          itemCount: products.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, crossAxisSpacing: 12, mainAxisSpacing: 12, childAspectRatio: 0.75,
-          ),
-          itemBuilder: (context, index) {
-            final product = products[index];
-            return GestureDetector(
-              onTap: () => _editProduct(index),
-              onLongPress: () => _deleteProduct(index),
-              child: Card(
-                elevation: 3,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-                        child: product["image"] != null
-                            ? Image.file(product["image"], fit: BoxFit.cover)
-                            : Container(
-                          color: Colors.grey[200],
-                          child: Icon(Icons.image_not_supported, size: 40),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(product["name"], style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text("₹${product["price"]} • Stock: ${product["stock"]}"),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+      body: ListView.builder(
+        padding: EdgeInsets.all(16),
+        itemCount: products.length,
+        itemBuilder: (context, index) {
+          final product = products[index];
+          return Card(
+            margin: EdgeInsets.only(bottom: 16),
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Colors.indigo.shade100,
+                child: Icon(Icons.shopping_bag, color: Colors.indigo),
               ),
-            );
-          },
-        ),
+              title: Text(product["name"]),
+              subtitle: Text("₹${product["price"]} • Stock: ${product["stock"]}"),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.edit, color: Colors.blue),
+                    onPressed: () => _editProduct(index),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.delete, color: Colors.red),
+                    onPressed: () => _deleteProduct(index),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _navigateToAddProduct,
+        backgroundColor: Colors.indigo,
+        child: Icon(Icons.add),
       ),
     );
   }

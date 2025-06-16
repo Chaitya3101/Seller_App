@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -46,9 +45,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Add Product"), backgroundColor: Colors.indigo),
+      appBar: AppBar(
+        title: Text("Add New Product"),
+        backgroundColor: Colors.indigo,
+      ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(24),
+        padding: EdgeInsets.all(16),
         child: Form(
           key: _formKey,
           child: Column(
@@ -74,15 +76,22 @@ class _AddProductScreenState extends State<AddProductScreen> {
               SizedBox(height: 20),
               TextFormField(
                 controller: nameController,
-                decoration: InputDecoration(labelText: "Product Name", border: OutlineInputBorder()),
-                validator: (val) => val!.isEmpty ? "Enter product name" : null,
+                decoration: InputDecoration(
+                  labelText: "Product Name",
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) => value!.isEmpty ? "Required" : null,
               ),
               SizedBox(height: 16),
               TextFormField(
                 controller: priceController,
+                decoration: InputDecoration(
+                  labelText: "Price",
+                  border: OutlineInputBorder(),
+                  prefixText: "\$",
+                ),
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: "Price (₹)", border: OutlineInputBorder()),
-                validator: (val) => val!.isEmpty ? "Enter price" : null,
+                validator: (value) => value!.isEmpty ? "Required" : null,
               ),
               SizedBox(height: 16),
               TextFormField(
@@ -104,15 +113,25 @@ class _AddProductScreenState extends State<AddProductScreen> {
               SizedBox(height: 16),
               TextFormField(
                 controller: descController,
+                decoration: InputDecoration(
+                  labelText: "Description",
+                  border: OutlineInputBorder(),
+                ),
                 maxLines: 3,
-                decoration: InputDecoration(labelText: "Description", border: OutlineInputBorder()),
+                validator: (value) => value!.isEmpty ? "Required" : null,
               ),
               SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: Text("Add Product"),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.indigo),
-              )
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _submitForm,
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 14),
+                    backgroundColor: Colors.indigo,
+                  ),
+                  child: Text("Add Product", style: TextStyle(fontSize: 16)),
+                ),
+              ),
             ],
           ),
         ),

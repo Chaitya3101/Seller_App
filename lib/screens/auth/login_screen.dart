@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import '../dashboard/seller_dashboard_with_sidebar_logout.dart';
-import '../dashboard/seller_dashboard.dart';
-import 'signup_screen.dart';
 
 class SellerLoginScreen extends StatefulWidget {
   @override
@@ -13,7 +11,7 @@ class _SellerLoginScreenState extends State<SellerLoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void _login() {
+  void _submitForm() {
     if (_formKey.currentState!.validate()) {
       Navigator.pushReplacement(
         context,
@@ -45,9 +43,11 @@ class _SellerLoginScreenState extends State<SellerLoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Seller Login", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  Text("Welcome Back",
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                   SizedBox(height: 8),
-                  Text("Log in to manage your products", style: TextStyle(fontSize: 16, color: Colors.grey.shade700)),
+                  Text("Sign in to continue",
+                      style: TextStyle(fontSize: 16, color: Colors.grey.shade700)),
                   SizedBox(height: 32),
                   TextFormField(
                     controller: emailController,
@@ -59,22 +59,18 @@ class _SellerLoginScreenState extends State<SellerLoginScreen> {
                     controller: passwordController,
                     obscureText: true,
                     decoration: InputDecoration(labelText: "Password", border: OutlineInputBorder()),
-                    validator: (value) => value!.length < 6 ? "Min 6 characters" : null,
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(onPressed: () {}, child: Text("Forgot Password?")),
+                    validator: (value) => value!.isEmpty ? "Required" : null,
                   ),
                   SizedBox(height: 24),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: _login,
+                      onPressed: _submitForm,
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 14),
                         backgroundColor: Colors.indigo,
                       ),
-                      child: Text("Login", style: TextStyle(fontSize: 16)),
+                      child: Text("Log In", style: TextStyle(fontSize: 16)),
                     ),
                   ),
                   SizedBox(height: 16),
@@ -84,12 +80,9 @@ class _SellerLoginScreenState extends State<SellerLoginScreen> {
                       Text("Don't have an account?"),
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => SellerSignupScreen()),
-                          );
+                          Navigator.pop(context);
                         },
-                        child: Text("Create account"),
+                        child: Text("Sign up"),
                       )
                     ],
                   )

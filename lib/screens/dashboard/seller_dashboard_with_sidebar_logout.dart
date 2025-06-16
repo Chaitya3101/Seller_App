@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../android/screens/auth/login_screen.dart';
-import '../../../android/screens/products/add_product_screen.dart';
+import '../auth/login_screen.dart';
+import '../products/add_product_screen.dart';
 import '../profiles/seller_profile_page.dart';
-import '../../../android/screens/inventory/inventory_screen.dart';
+import '../inventory/inventory_screen.dart';
 
 class SellerDashboardWithSidebar extends StatefulWidget {
   @override

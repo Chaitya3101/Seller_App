@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../android/screens/auth/login_screen.dart';
+import 'login_screen.dart';
 import '../dashboard/seller_dashboard_with_sidebar_logout.dart';
 
 class SellerSignupScreen extends StatefulWidget {
