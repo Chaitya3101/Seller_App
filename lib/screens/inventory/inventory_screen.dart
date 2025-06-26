@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import '../products/add_product_screen.dart';
 
@@ -9,25 +8,41 @@ class InventoryScreen extends StatefulWidget {
 
 class _InventoryScreenState extends State<InventoryScreen> {
   List<Map<String, dynamic>> products = [];
+  bool loading = false; // No backend, so no real loading
+
+  @override
+  void initState() {
+    super.initState();
+    fetchProducts();
+  }
+
+  void fetchProducts() {
+    // You can add sample products here for demo, or keep empty
+    setState(() {
+      loading = false;
+    });
+  }
 
   void _navigateToAddProduct() async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => AddProductScreen()),
     );
-
     if (result != null && result is Map<String, dynamic>) {
       setState(() {
         products.add(result);
       });
     }
   }
+
   void _editProduct(int index) async {
+    final productToEdit = products[index];
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => AddProductScreen()),
+      MaterialPageRoute(builder: (_) => AddProductScreen(
+        initialData: productToEdit, // (Optionally, pass data for editing)
+      )),
     );
-
     if (result != null && result is Map<String, dynamic>) {
       setState(() {
         products[index] = result;
@@ -67,7 +82,11 @@ class _InventoryScreenState extends State<InventoryScreen> {
         title: Text("Inventory Management"),
         backgroundColor: Colors.indigo,
       ),
-      body: ListView.builder(
+      body: loading
+          ? Center(child: CircularProgressIndicator())
+          : products.isEmpty
+          ? Center(child: Text("No products found.\nTap '+' to add.", textAlign: TextAlign.center))
+          : ListView.builder(
         padding: EdgeInsets.all(16),
         itemCount: products.length,
         itemBuilder: (context, index) {
@@ -79,8 +98,8 @@ class _InventoryScreenState extends State<InventoryScreen> {
                 backgroundColor: Colors.indigo.shade100,
                 child: Icon(Icons.shopping_bag, color: Colors.indigo),
               ),
-              title: Text(product["name"]),
-              subtitle: Text("₹${product["price"]} • Stock: ${product["stock"]}"),
+              title: Text(product["name"] ?? "Product"),
+              subtitle: Text("₹${product["price"] ?? '--'} • Stock: ${product["stock"] ?? '--'}"),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:visionmart_seller/screens/order%20management/order_management.dart';
+
 import '../auth/login_screen.dart';
+import '../inventory/inventory_screen.dart';
 import '../products/add_product_screen.dart';
 import '../profiles/seller_profile_page.dart';
-import '../inventory/inventory_screen.dart';
 
 class SellerDashboardWithSidebar extends StatefulWidget {
   @override
-  _SellerDashboardWithSidebarState createState() => _SellerDashboardWithSidebarState();
+  _SellerDashboardWithSidebarState createState() =>
+      _SellerDashboardWithSidebarState();
 }
 
-class _SellerDashboardWithSidebarState extends State<SellerDashboardWithSidebar> {
+class _SellerDashboardWithSidebarState
+    extends State<SellerDashboardWithSidebar> {
   int selectedIndex = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -62,7 +66,6 @@ class _SellerDashboardWithSidebarState extends State<SellerDashboardWithSidebar>
                 label: Text("Logout", style: TextStyle(color: Colors.white)),
               ),
             ],
-
             leading: !isWide
                 ? IconButton(
                     icon: Icon(Icons.menu),
@@ -125,7 +128,9 @@ class _SellerDashboardWithSidebarState extends State<SellerDashboardWithSidebar>
     } else if (index == 1) {
       return AddProductScreen(); // ✅ now this is active
     } else if (index == 2) {
-      return InventoryScreen();  // ✅ working as well
+      return InventoryScreen(); // ✅ working as well
+    } else if (index == 3) {
+      return OrderManagementScreen();
     } else {
       return Center(child: Text("This section will be implemented soon."));
     }
@@ -135,7 +140,8 @@ class _SellerDashboardWithSidebarState extends State<SellerDashboardWithSidebar>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Dashboard", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+        Text("Dashboard",
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
         SizedBox(height: 24),
         Expanded(
           child: GridView.count(
@@ -164,8 +170,13 @@ class _SellerDashboardWithSidebarState extends State<SellerDashboardWithSidebar>
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Icon(icon, size: 40, color: Colors.indigo),
-            Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-            Text(value, style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.indigo)),
+            Text(title,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+            Text(value,
+                style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.indigo)),
           ],
         ),
       ),
