@@ -35,7 +35,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     required String description,
     File? imageFile,
   }) async {
-    var uri = Uri.parse('http://10.0.2.2:5001/api/products');
+    var uri = Uri.parse('http://localhost:5001/api/products');
     var request = http.MultipartRequest('POST', uri);
 
     request.fields['name'] = name;
